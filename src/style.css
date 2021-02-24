@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;1,300&family=Nunito:wght@400;700&display=swap');
+body{
+  background: url("img/background-site.png") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+h2{
+    color:#fff;
+    font-family: 'Nunito';
+    font-weight: 700;
+    letter-spacing: 3px;
+    font-size: 40px;
+}
+
+h3{
+    color:#0484A3;
+    font-family: 'Nunito';
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 35px;
+}
+
+p{
+    font-family: 'Nunito Sans';
+    font-size: 18px;
+    color:#878787;
+    border-bottom: solid 2.5px #bcd700;
+    text-align: left;
+}
+
+p span{
+    font-size: 20px;
+    color:#bcd700;
+    font-family: 'Nunito';
+    font-weight: 700; 
+    padding-right: 15px;
+}
+
+.title_primary{
+    color:#0484a3;
+    font-family: 'Nunito';
+    font-weight: 700;
+    font-size: 50px;
+    letter-spacing: 4px ;
+    border-bottom: solid 4px #fff;
+    width: max-content;
+    display: block;
+    margin: auto;
+}
+
+.btn_add{
+    cursor: pointer;
+    background-color: #fff;
+    width: 130px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 5%;
+    padding: 10px;
+    overflow: hidden;
+}
+
+.text_add{
+    color:#878787;
+    font-family: 'Nunito Sans';
+    text-align: center;
+    font-size: 13px;
+    opacity: 0;
+    
+}
+
+.icon_add{
+    display: block;
+    height: 80px;
+    width: auto;
+    transition: all linear 200ms;
+
+}
+
+.btn_add:hover .icon_add{
+    height: 50px;
+}
+
+
+.btn_add:hover .text_add{
+    opacity: 1;
+}
+
+.text_user{
+    font-family: 'Nunito Sans';
+    color:#878787;
+    border-bottom: solid 2px #bcd700;
+    text-align: left;
+    font-size: 18px;
+}
+
+.btn_open{
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+}
+.icon_open{
+    width: 50%;
+    transition: width 500ms;
+}
+.btn_open:hover .icon_open{
+    width: 48%;
+}
+
+.icon{
+    cursor: pointer;
+    width: 100%;
+    transition: width 500ms;
+}
+
+.icon:hover{
+    width: 90%;
+}

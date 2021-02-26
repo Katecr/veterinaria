@@ -1,8 +1,6 @@
 import React, {useState} from 'react'
 import {isEmpty} from 'lodash'
 import shortid from 'shortid'
-
-
 import './style.css'
 import  Header from "./components/Header"
 import btn_add from "./img/btn-add.png"
@@ -17,6 +15,9 @@ function App() {
   const [patients, setPatients] = useState([])
   const [editMode, setEditMode] = useState(false)
   const [id, setId] = useState("")
+
+
+  
 
   const addPatient = (e) =>{
       e.preventDefault()
@@ -45,31 +46,71 @@ function App() {
 
   const savePatient = (e) =>{
     e.preventDefault()
+    console.log("entro al save patient")
     if(isEmpty(patient.namePet)||isEmpty(patient.specie)||isEmpty(patient.breed)||isEmpty(patient.birth)||isEmpty(patient.nameUser)||isEmpty(patient.phone)||isEmpty(patient.address)||isEmpty(patient.email)){
       console.log("Patient empty")
       return
     }
-
+    console.log(patient)
+    setPatient({
+      id:id,
+      namePet:patient.namePet,
+      specie:patient.specie,
+      breed:patient.breed,
+      birth:patient.birth,
+      nameUser:patient.nameUser,
+      phone:patient.phone,
+      address:patient.address,
+      email:patient.email
+    })
     
+    const editedPatients = patients.map(item => item.id == id ? 
+      {
+        id:id,
+        namePet:patient.namePet,
+        specie:patient.specie,
+        breed:patient.breed,
+        birth:patient.birth,
+        nameUser:patient.nameUser,
+        phone:patient.phone,
+        address:patient.address,
+        email:patient.email} : item)
+    
+     
+    setPatients(editedPatients)
+    
+
     setEditMode(false)
     setPatient({namePet:"",specie:"",breed:"",birth:"",nameUser:"",phone:"",address:"",email:""})    
     setId("")
     return
 }
 
-  const deletePatient = (id) =>{
+  
+  const editPatient = (thePatient) =>{
+    
+    setPatient({
+      namePet:thePatient.namePet,
+      specie:thePatient.specie,
+      breed:thePatient.breed,
+      birth:thePatient.birth,
+      nameUser:thePatient.nameUser,
+      phone:thePatient.phone,
+      address:thePatient.address,
+      email:thePatient.email
+    })
+    setEditMode(true)
+    setId(thePatient.id)
+  }
+  
+  const deletePatient = (data) =>{
+    setId(data)
     console.log(id)
-    setId(id)
     const filteredPatients = patients.filter(patient => patient.id !== id)
     setPatients(filteredPatients)
   }
 
-  const editPatient = (thePatient) =>{
-    console.log(thePatient)
-    setPatient({namePet:thePatient.namePet,specie:thePatient.specie,breed:thePatient.breed,birth:thePatient.birth,nameUser:thePatient.nameUser,phone:thePatient.phone,address:thePatient.address,email:thePatient.email})
-    setEditMode(true)
-    setId(id)
-  }
+  
 
   return (
     <div>
@@ -150,12 +191,12 @@ function App() {
                         </div>
                         <div className="row"> 
                             <div className="col-md-12 col-xs-12 col-sm-12 d-flex pt-4 justify-content-center">
-                              <div className="btn_edit"  data-toggle="modal" data-target="#modalUser" onClick={ () => editPatient(patient)}>
+                              <div className="btn_edit" data-toggle="modal" data-target="#modalUser" onClick={ () => editPatient(patient)} >
                                   <figure>
                                     <img src={btn_edit} alt="btn_edit" title="btn_edit" className="icon"/>
                                   </figure>
                               </div>
-                              <div className="btn_remove" onClick={ () => deletePatient(patient.id)}>
+                              <div className="btn_remove" data-toggle="modal" data-target="#modalDelete" onClick={() => setId(patient.id)} >
                                   <figure>
                                     <img src={btn_remove} alt="btn_remove" title="btn_remove" className="icon"/>
                                   </figure>
@@ -167,6 +208,7 @@ function App() {
                     {/* End container body accordion */}
                   </div>
                 </div>
+
                 ))
               }
 
@@ -225,7 +267,7 @@ function App() {
                         </div>
                         <div class="form-group">
                           <label for="name_email"><span>E-mail:</span></label>
-                          <input type="email" class="form-control" id="name_email" placeholder="Ingrese email"onChange={(text) => setPatient({...patient, email:text.target.value})} value={patient.email}/>
+                          <input type="email" class="form-control" id="name_email" placeholder="Ingrese email" onChange={(text) => setPatient({...patient, email:text.target.value})} value={patient.email}/>
                         </div>
                     </div>
                   </div>
@@ -243,27 +285,32 @@ function App() {
       </div>
       <div>
         {/*modal delete*/}
-        <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalLabel2" aria-hidden="true" key={patient.id}>
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 class="modal-title">Eliminar Paciente</h1>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p>Estas seguro que deseas eliminar el paciente.</p>   
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button  class="btn btn-danger" >Eliminar definitivamente</button>
+            <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalLabelDelete" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title" id="modalLabelDelete">Eliminar Paciente</h1>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+                    <div class="form-group">
+                      <label><span>Esta seguro que desea borrar el paciente.</span></label>           
+                    </div>   
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancelar</button>
+                      <button  type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Close" onClick={() => deletePatient(patient.id)}>Eliminar definitivamente</button>
+                    </div>
+                </div>              
               </div>
             </div>
-          </div>
-        </div>
-        {/* end modal delete*/}       
+          </div> 
+        {/* end modal delete*/}      
+
       </div>
+     
         
     </div>
   )

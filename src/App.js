@@ -1,6 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {isEmpty, size} from 'lodash'
-import shortid from 'shortid'
 import './style.css'
 import  Header from "./components/Header"
 import btn_add from "./img/btn-add.png"
@@ -8,6 +7,7 @@ import btn_open from "./img/btn-open.png"
 import btn_edit from "./img/btn-edit.png"
 import btn_remove from "./img/btn-remove.png"
 import image_Pet from "./img/img_pet.png"
+import { addDocument, deleteDocument, getCollection, updateDocument } from './actions'
 
 
 function App() {
@@ -17,17 +17,23 @@ function App() {
   const [id, setId] = useState("")
 
 
-  
+  useEffect(() => {
+    (async () => {
+      const result = await getCollection("patients")
+      if(result.statusResponse){
+        setPatients(result.data)
+      }      
+    })()
+  }, [])  
 
-  const addPatient = (e) =>{
+  const addPatient = async(e) =>{
       e.preventDefault()
       if(isEmpty(patient.namePet)||isEmpty(patient.specie)||isEmpty(patient.breed)||isEmpty(patient.birth)||isEmpty(patient.nameUser)||isEmpty(patient.phone)||isEmpty(patient.address)||isEmpty(patient.email)){
         console.log("Patient empty")
         return
       }
 
-      const newPatient = {
-        id: shortid.generate(),
+      const result = await addDocument("patients", {
         namePet:patient.namePet,        
         specie:patient.specie,
         breed:patient.breed,
@@ -35,34 +41,39 @@ function App() {
         nameUser:patient.nameUser,
         phone:patient.phone,
         address:patient.address,
-        email:patient.email
-      }
+        email:patient.email})
 
 
-      setPatients([...patients, newPatient])
+      setPatients([...patients, {id: result.data.id, namePet:patient.namePet,        
+        specie:patient.specie,
+        breed:patient.breed,
+        birth:patient.birth,
+        nameUser:patient.nameUser,
+        phone:patient.phone,
+        address:patient.address,
+        email:patient.email }])
       setPatient({namePet:"",specie:"",breed:"",birth:"",nameUser:"",phone:"",address:"",email:""})
       return
   }
 
-  const savePatient = (e) =>{
+  const savePatient = async(e) =>{
     e.preventDefault()
     console.log("entro al save patient")
     if(isEmpty(patient.namePet)||isEmpty(patient.specie)||isEmpty(patient.breed)||isEmpty(patient.birth)||isEmpty(patient.nameUser)||isEmpty(patient.phone)||isEmpty(patient.address)||isEmpty(patient.email)){
       console.log("Patient empty")
       return
     }
-    console.log(patient)
-    setPatient({
-      id:id,
-      namePet:patient.namePet,
+    
+    const result= await updateDocument("patients", id, {namePet:patient.namePet,
       specie:patient.specie,
       breed:patient.breed,
       birth:patient.birth,
       nameUser:patient.nameUser,
       phone:patient.phone,
       address:patient.address,
-      email:patient.email
-    })
+      email:patient.email})
+
+    
     
     const editedPatients = patients.map(item => item.id == id ? 
       {
@@ -103,9 +114,10 @@ function App() {
     setId(thePatient.id)
   }
   
-  const deletePatient = (data) =>{
+  const deletePatient = async(data) =>{
     setId(data)
-    console.log(id)
+    const result = await deleteDocument("patients", id)
+    
     const filteredPatients = patients.filter(patient => patient.id !== id)
     setPatients(filteredPatients)
   }
@@ -254,7 +266,7 @@ function App() {
                       </div>
                       <div class="form-group">
                         <label for="name_birth"><span>Nacimiento:</span></label>
-                        <input type="date" class="form-control" id="name_birth" onChange={(text) => setPatient({...patient, birth:text.target.value})} value={patient.birth}/>
+                        <input type="text" class="form-control" id="name_birth" onChange={(text) => setPatient({...patient, birth:text.target.value})} value={patient.birth}/>
                       </div>
                     </div>
                     <div class="col-md-6">

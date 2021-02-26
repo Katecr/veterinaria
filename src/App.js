@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {isEmpty} from 'lodash'
+import {isEmpty, size} from 'lodash'
 import shortid from 'shortid'
 import './style.css'
 import  Header from "./components/Header"
@@ -137,80 +137,86 @@ function App() {
           <div className="col-md-12 col-xs-12 col-sm-12 text-center mt-5">
             <h2>PACIENTES</h2>
             {/*accordion pacient */}
-              {
-                patients.map((patient) => (
-                  <div class="accordion" id="accordionPet" key={patient.id}>
-                  <div class="card">
-                    {/* End container header accordion */}
-                    <div class="card-header" id="headingOne">
-                      <div className="row position-relative">
-                        <div className="col-md-1 col-xs-12 col-sm-6 mr-5 col-md-offset-2">
-                          <figure className="float-left p-2">
-                            <img src={image_Pet} alt="img_mascota" title="img_mascota"/>
-                          </figure>                          
-                        </div>
-                        <div className="col-md-3 col-xs-12 col-sm-6 mt-3">
-                          <p className="text_user">{patient.namePet}</p>
-                        </div>
-                        <div className="col-md-3 col-xs-12 col-sm-6 mt-3">
-                          <p className="text_user">{patient.specie}</p>
-                        </div>
-                        <div className="col-md-3 col-xs-12 col-sm-6 mt-3">
-                          <p className="text_user">{patient.birth}</p>
-                        </div>
-                        <div className="col-md-2 col-xs-12 col-sm-6 position-absolute btn_open">
-                          <div data-toggle="collapse" data-target={'#'+patient.id} aria-expanded="true" aria-controls="collapse_Pet">
-                              <figure>
-                                <img src={btn_open} alt="btn_open" title="btn_open" className="icon_open"/>
-                              </figure>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {/* End container header accordion */}
-                    {/*container boddy accordion */}
-                    <div id={patient.id} class="collapse show" aria-labelledby="headingOne" data-parent="#accordionPet">
-                      <div class="card-body">
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-xs-12 col-sm-6 col-md-6">
-                              <h3><span>Mascotas</span></h3>
-                              <p><span>Nombre:</span>{patient.namePet}</p>
-                              <p><span>Especie:</span>{patient.specie}</p>
-                              <p><span>Raza:</span>{patient.breed}</p>
-                              <p><span>Nacimiento:</span>{patient.birth}</p>
-                            </div>
-                            <div class="col-xs-12 col-sm-6 col-md-6">
-                              <h3><span>Propietario</span></h3>
-                              <p><span>Nombre:</span>{patient.nameUser}</p>
-                              <p><span>Teléfono:</span>{patient.phone}</p>
-                              <p><span>Dirección:</span>{patient.address}</p>
-                              <p><span>E-mail:</span>{patient.email}</p>
+                  {
+                    size(patients) == 0 ? (
+                      <h4
+                      >Aún no hay pacientes escritos.</h4>
+                    ) : (
+                      patients.map((patient) => (
+                        <div class="accordion" id="accordionPet" key={patient.id}>
+                        <div class="card">
+                          {/* End container header accordion */}
+                          <div class="card-header" id="headingOne">
+                            <div className="row position-relative">
+                              <div className="col-md-1 col-xs-12 col-sm-6 mr-5 col-md-offset-2">
+                                <figure className="float-left p-2">
+                                  <img src={image_Pet} alt="img_mascota" title="img_mascota"/>
+                                </figure>                          
+                              </div>
+                              <div className="col-md-3 col-xs-12 col-sm-6 mt-3">
+                                <p className="text_user">{patient.namePet}</p>
+                              </div>
+                              <div className="col-md-3 col-xs-12 col-sm-6 mt-3">
+                                <p className="text_user">{patient.specie}</p>
+                              </div>
+                              <div className="col-md-3 col-xs-12 col-sm-6 mt-3">
+                                <p className="text_user">{patient.birth}</p>
+                              </div>
+                              <div className="col-md-2 col-xs-12 col-sm-6 position-absolute btn_open">
+                                <div data-toggle="collapse" data-target={'#'+patient.id} aria-expanded="true" aria-controls="collapse_Pet">
+                                    <figure>
+                                      <img src={btn_open} alt="btn_open" title="btn_open" className="icon_open"/>
+                                    </figure>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row"> 
-                            <div className="col-md-12 col-xs-12 col-sm-12 d-flex pt-4 justify-content-center">
-                              <div className="btn_edit" data-toggle="modal" data-target="#modalUser" onClick={ () => editPatient(patient)} >
-                                  <figure>
-                                    <img src={btn_edit} alt="btn_edit" title="btn_edit" className="icon"/>
-                                  </figure>
+                          {/* End container header accordion */}
+                          {/*container boddy accordion */}
+                          <div id={patient.id} class="collapse show" aria-labelledby="headingOne" data-parent="#accordionPet">
+                            <div class="card-body">
+                              <div class="container">
+                                <div class="row">
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <h3><span>Mascotas</span></h3>
+                                    <p><span>Nombre:</span>{patient.namePet}</p>
+                                    <p><span>Especie:</span>{patient.specie}</p>
+                                    <p><span>Raza:</span>{patient.breed}</p>
+                                    <p><span>Nacimiento:</span>{patient.birth}</p>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <h3><span>Propietario</span></h3>
+                                    <p><span>Nombre:</span>{patient.nameUser}</p>
+                                    <p><span>Teléfono:</span>{patient.phone}</p>
+                                    <p><span>Dirección:</span>{patient.address}</p>
+                                    <p><span>E-mail:</span>{patient.email}</p>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="btn_remove" data-toggle="modal" data-target="#modalDelete" onClick={() => setId(patient.id)} >
-                                  <figure>
-                                    <img src={btn_remove} alt="btn_remove" title="btn_remove" className="icon"/>
-                                  </figure>
+                              <div className="row"> 
+                                  <div className="col-md-12 col-xs-12 col-sm-12 d-flex pt-4 justify-content-center">
+                                    <div className="btn_edit" data-toggle="modal" data-target="#modalUser" onClick={ () => editPatient(patient)} >
+                                        <figure>
+                                          <img src={btn_edit} alt="btn_edit" title="btn_edit" className="icon"/>
+                                        </figure>
+                                    </div>
+                                    <div className="btn_remove" data-toggle="modal" data-target="#modalDelete" onClick={() => setId(patient.id)} >
+                                        <figure>
+                                          <img src={btn_remove} alt="btn_remove" title="btn_remove" className="icon"/>
+                                        </figure>
+                                    </div>
+                                  </div> 
                               </div>
-                            </div> 
+                            </div>
+                          </div>
+                          {/* End container body accordion */}
                         </div>
                       </div>
-                    </div>
-                    {/* End container body accordion */}
-                  </div>
-                </div>
-
-                ))
-              }
+  
+                      ))
+                    )
+                    
+                  }
 
             {/* End accordion */}
           </div>

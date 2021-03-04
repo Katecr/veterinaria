@@ -15,6 +15,7 @@ function App() {
   const [patients, setPatients] = useState([])
   const [editMode, setEditMode] = useState(false)
   const [id, setId] = useState("")
+  
 
 
   useEffect(() => {
@@ -122,7 +123,10 @@ function App() {
     setPatients(filteredPatients)
   }
 
-  
+  const clearPatient = () =>{
+    setEditMode(false)
+    setPatient({namePet:"",specie:"",breed:"",birth:"",nameUser:"",phone:"",address:"",email:""})
+  }
 
   return (
     <div>
@@ -174,7 +178,7 @@ function App() {
                               <div className="col-md-3 col-xs-12 col-sm-6 mt-3">
                                 <p className="text_user">{patient.birth}</p>
                               </div>
-                              <div className="col-md-2 col-xs-12 col-sm-6 position-absolute btn_open">
+                              <div className="col-md-2 col-xs-2 col-sm-2 position-absolute btn_open">
                                 <div data-toggle="collapse" data-target={'#'+patient.id} aria-expanded="true" aria-controls="collapse_Pet">
                                     <figure>
                                       <img src={btn_open} alt="btn_open" title="btn_open" className="icon_open"/>
@@ -190,7 +194,7 @@ function App() {
                               <div class="container">
                                 <div class="row">
                                   <div class="col-xs-12 col-sm-6 col-md-6">
-                                    <h3><span>Mascotas</span></h3>
+                                    <h3><span>Mascota</span></h3>
                                     <p><span>Nombre:</span>{patient.namePet}</p>
                                     <p><span>Especie:</span>{patient.specie}</p>
                                     <p><span>Raza:</span>{patient.breed}</p>
@@ -266,7 +270,7 @@ function App() {
                       </div>
                       <div class="form-group">
                         <label for="name_birth"><span>Nacimiento:</span></label>
-                        <input type="text" class="form-control" id="name_birth" onChange={(text) => setPatient({...patient, birth:text.target.value})} value={patient.birth}/>
+                        <input type="text" class="form-control" id="name_birth" placeholder="Ingrese Fecha 00/00/00" onChange={(text) => setPatient({...patient, birth:text.target.value})} value={patient.birth}/>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -290,7 +294,7 @@ function App() {
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" onClick={(text) =>clearPatient()}>Cancelar</button>
                     <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalUser">{ editMode ? "Actualizar" : "Agregar" }</button>
                   </div>
                 </form> 
